@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+
+    {% block content %}
+
+    {% if request.user.is_authenticated %}
+    <h7>
+        Вы авторизованы как {{user.username}}
+        <a href="/logout/">Выйти</a>
+    </h7>
+    <br>
+    <a href="{%url 'post_create'%}">Создать объявление</a>
+    <a href="{%url 'responses'%}">Личный чат</a>
+    <br>
+
+    {% else %}
+         <a href="/accounts/login/">Войти или зарегистрироваться</a>
+    <br>
+    {%endif%}
+
+    <table>
+        {% for post in posts %}
+            <tr>
+                {% autoescape off %}
+                <td>
+                    <a href="/posts/{{ post.id }}" style="font-size: 14px;"><h2>{{ post.title }}</h2></a> <h4>{{post.content}}</h4>
+                    <h5>Автор объявления - {{ post.author }}, категория - {{ post.get_category_display }}</h5>
+                    {% if request.user.is_authenticated %}
+                        {% if post.author.username == user.username %}
+                            <a href="{% url 'post_update' pk=post.id %}">Изменить / </a>
+                            <a href="{% url 'post_delete' pk=post.id %}">Удалить</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                {% endautoescape %}
+            </tr>
+
+        {% endfor %}
+    </table>
+    {% endblock content %}

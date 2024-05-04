@@ -1,0 +1,7 @@
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="code">
+    <button>Send</button>
+</form>
+{% endblock content%}
